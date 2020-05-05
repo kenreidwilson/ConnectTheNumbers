@@ -7,7 +7,7 @@ LINKFLTK_GL  = $(shell $(FLTKCONFIG) --use-gl --ldstaticflags)
 LINKFLTK_IMG = $(shell $(FLTKCONFIG) --use-images --ldstaticflags)
 LINKFLTK_ALL = $(shell $(FLTKCONFIG) --use-images --use-gl --ldstaticflags)
 
-ConnectTheNumbers: bin/ConnectTheNumbers.o bin/PuzzleManager.o bin/PuzzleParser.o bin/Scoreboard.o bin/ScoreboardEntry.o bin/UserSettings.o \
+ConnectTheNumbers: bin bin/ConnectTheNumbers.o bin/PuzzleManager.o bin/PuzzleParser.o bin/Scoreboard.o bin/ScoreboardEntry.o bin/UserSettings.o \
 	bin/FileIOUtility.o \
 	bin/GameMainWindow.o bin/PuzzleboardWindow.o bin/ScoreboardWindow.o bin/GetUserInputWindow.o bin/UserPreferencesWindow.o
 	$(CXX) $(CXXFLAGS) bin/*.o -o ConnectTheNumbers $(LINKFLTK_ALL)
@@ -47,6 +47,9 @@ bin/ScoreboardWindow.o: View/ScoreboardWindow.cpp View/ScoreboardWindow.h
 
 bin/UserPreferencesWindow.o: View/UserPreferencesWindow.cpp View/UserPreferencesWindow.h
 	$(CXX) $(CXXFLAGS) -IUtility -IModel -IView -c View/UserPreferencesWindow.cpp -o bin/UserPreferencesWindow.o
+
+bin:
+	mkdir $@
 
 clean:
 	rm -r ConnectTheNumbers bin/*

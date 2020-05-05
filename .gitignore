@@ -1,0 +1,6 @@
+.gitignore
+bin/*
+ConnectTheNumbers
+scoreboard.csv
+user_puzzles.csv
+UserSettings.txt
