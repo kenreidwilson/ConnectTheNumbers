@@ -87,7 +87,7 @@ private:
     PuzzleParser puzzleParser;
     PuzzleManager* puzzle;
     UserSettings* userSettings;
-    map<Fl_Button*, int> buttonNumberMap;
+    map<Fl_Button*, int*> buttonNumberMap;
 
     void colorPuzzleButton(Fl_Button* button);
     void initializePuzzleButtons();

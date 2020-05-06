@@ -1,5 +1,7 @@
 #include "PuzzleboardWindow.h"
 
+#include <iostream>
+
 namespace View
 {
 PuzzleBoardWindow::PuzzleBoardWindow(int puzzleNumber, UserSettings* userSettings) : Fl_Window(700, 600, "Puzzleboard Window")
@@ -62,7 +64,11 @@ void PuzzleBoardWindow::initializePuzzleButtons()
         auto button = new Fl_Button((BOXLENGTH)*current+STARTPOINT, (STARTPOINT+amount), BOXLENGTH, BOXLENGTH, "");
         button->callback(cbAddNumber, this);
         this->colorPuzzleButton(button);
-        this->buttonNumberMap[button] = i;
+
+        int* index = new int;
+        *index = i;
+
+        this->buttonNumberMap[button] = index;
         current++;
     }
 }
@@ -71,8 +77,8 @@ void PuzzleBoardWindow::showPuzzleButtonLabels()
 {
     for (const auto &buttonNumberPair : this->buttonNumberMap)
     {
-        int x = this->puzzle->getXCoordinateFromPosition(buttonNumberPair.second);
-        int y = this->puzzle->getYCoordinateFromPosition(buttonNumberPair.second);
+        const int x = this->puzzle->getXCoordinateFromPosition(*buttonNumberPair.second);
+        const int y = this->puzzle->getYCoordinateFromPosition(*buttonNumberPair.second);
         int squareValue = this->puzzle->getSquareValue(x, y);
 
         const char* buttonLabel = squareValue == this->blankSquareValue ? "" : to_string(squareValue).c_str();
@@ -121,7 +127,7 @@ void PuzzleBoardWindow::cbAddNumber(Fl_Widget* widget, void* data)
     }
 
     Fl_Button* buttonPushed = (Fl_Button*) widget;
-    int buttonNumber = window->buttonNumberMap[buttonPushed];
+    const int buttonNumber = *(window->buttonNumberMap[buttonPushed]);
 
     int x = window->puzzle->getXCoordinateFromPosition(buttonNumber);
     int y = window->puzzle->getYCoordinateFromPosition(buttonNumber);
@@ -225,8 +231,9 @@ void PuzzleBoardWindow::cbLoadUserSave(Fl_Widget* widget, void* data)
         return;
     }
     delete window->puzzle;
-    window->puzzle = newPuzzle;
+    *window->puzzle = *newPuzzle;
     delete newPuzzle;
+    window->hidePuzzleButtonLabels();
     window->showPuzzleButtonLabels();
     window->resetTimer();
 }

@@ -47,7 +47,7 @@ PuzzleManager* PuzzleParser::parsePuzzle(string fileName, int puzzleNumber)
     {
         if (currentChar == this->csvDelimiter)
         {
-            addSquareToPuzzle(*puzzle, currentSquare);
+            addSquareToPuzzle(puzzle, currentSquare);
             currentSquare = "";
         }
         else
@@ -55,12 +55,12 @@ PuzzleManager* PuzzleParser::parsePuzzle(string fileName, int puzzleNumber)
             currentSquare += currentChar;
         }
     }
-    addSquareToPuzzle(*puzzle, currentSquare);
+    addSquareToPuzzle(puzzle, currentSquare);
 
     return puzzle;
 }
 
-void PuzzleParser::addSquareToPuzzle(PuzzleManager &puzzle, string squareRepresentation)
+void PuzzleParser::addSquareToPuzzle(PuzzleManager* puzzle, string& squareRepresentation)
 {
     char delimiter;
     bool hasPassedDelimiter = false;
@@ -99,13 +99,13 @@ void PuzzleParser::addSquareToPuzzle(PuzzleManager &puzzle, string squareReprese
         return;
     }
 
-    int squareXCoordinate = puzzle.getXCoordinateFromPosition(squarePosition);
-    int squareYCoordinate = puzzle.getYCoordinateFromPosition(squarePosition);
+    int squareXCoordinate = puzzle->getXCoordinateFromPosition(squarePosition);
+    int squareYCoordinate = puzzle->getYCoordinateFromPosition(squarePosition);
 
-    puzzle.setSquareValue(squareXCoordinate, squareYCoordinate, squareValue);
+    puzzle->setSquareValue(squareXCoordinate, squareYCoordinate, squareValue);
     if (delimiter == this->puzzleDefinedValueIdentifier)
     {
-        puzzle.addPuzzleDefinedPosition(squareXCoordinate, squareYCoordinate);
+        puzzle->addPuzzleDefinedPosition(squareXCoordinate, squareYCoordinate);
     }
 }
 
@@ -117,7 +117,7 @@ string PuzzleParser::serializePuzzle(PuzzleManager* puzzle)
         for (int x = 0; x < puzzle->width; x++)
         {
             char delimiter = puzzle->isPuzzleDefinedPosition(x, y) ? this->puzzleDefinedValueIdentifier : this->userDefinedValueIdentifier;
-            puzzleStringStream << (y * puzzle->height + x) << delimiter << puzzle->getSquareValue(x, y);
+            puzzleStringStream << puzzle->getPositionFromCoordinates(x, y) << delimiter << puzzle->getSquareValue(x, y);
             if (x != puzzle->width - 1 || y != puzzle->height - 1)
             {
                 puzzleStringStream << this->csvDelimiter;

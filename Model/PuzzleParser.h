@@ -94,7 +94,7 @@ private:
     * @param puzzle the puzzle that the square will be added to.
     * @param squareRepresentation a string representation of a square.
     */
-    void addSquareToPuzzle(PuzzleManager &puzzle, string squareRepresentation);
+    void addSquareToPuzzle(PuzzleManager* puzzle, string& squareRepresentation);
 
     /**
     * Returns a parsable string represention of a PuzzleManager object.
