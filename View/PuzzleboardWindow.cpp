@@ -1,7 +1,5 @@
 #include "PuzzleboardWindow.h"
 
-#include <iostream>
-
 namespace View
 {
 PuzzleBoardWindow::PuzzleBoardWindow(int puzzleNumber, UserSettings* userSettings) : Fl_Window(700, 600, "Puzzleboard Window")
@@ -231,8 +229,7 @@ void PuzzleBoardWindow::cbLoadUserSave(Fl_Widget* widget, void* data)
         return;
     }
     delete window->puzzle;
-    *window->puzzle = *newPuzzle;
-    delete newPuzzle;
+    window->puzzle = newPuzzle;
     window->hidePuzzleButtonLabels();
     window->showPuzzleButtonLabels();
     window->resetTimer();
@@ -246,7 +243,7 @@ void PuzzleBoardWindow::cbSaveUserPuzzle(Fl_Widget* widget, void* data)
         return;
     }
     PuzzleManager* currentPuzzle = window->puzzle;
-    window->puzzleParser.saveUserPuzzle(currentPuzzle, window->puzzleNumber);
+    window->puzzleParser.saveUserPuzzle(*currentPuzzle, window->puzzleNumber);
 }
 
 void PuzzleBoardWindow::cbPauseGame(Fl_Widget* widget, void* data)
